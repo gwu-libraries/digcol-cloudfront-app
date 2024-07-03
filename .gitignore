@@ -129,6 +129,7 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/osx,node,linux,windows
 
 *.js
+!custom-assets/js/*.js
 !*.config.js
 
 packaged.yaml

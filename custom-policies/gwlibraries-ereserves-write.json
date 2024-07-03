@@ -8,7 +8,7 @@
                 "s3:ListBucket"
             ],
             "Resource": [
-                "arn:aws:s3:::serverlessrepo-gwu-s3-access-s3bucket-{bucket-id}"
+                "arn:aws:s3:::{bucket-name}"
             ]
         },
         {
@@ -18,7 +18,7 @@
                 "s3:PutObject"
             ],
             "Resource": [
-                "arn:aws:s3:::serverlessrepo-gwu-s3-access-s3bucket-{bucket-id}/*"
+                "arn:aws:s3:::{bucket-name}/*"
             ]
         },
         {
@@ -33,7 +33,7 @@
                 "logs:PutLogEvents"
             ],
             "Resource": [
-                "arn:aws:logs:us-east-1:417560131410:log-group:/aws/lambda/gwlibraries-ereserves-object-list:*"
+                "arn:aws:logs:us-east-1:{user-id}:log-group:/aws/lambda/gwlibraries-ereserves-object-list:*"
             ]
         }
     ]
