@@ -1,11 +1,12 @@
 import { TreeMap } from './treemap.js'
 
+
 window.onload = async (event) => {
     /* Uses the hyparquet.js library to load a parquet file of S3 inventory.
     The "key" column should contain the paths to the objects in the bucket. */
-    const { parquetRead } = await import("./hyparquet/src/hyparquet.js")
-    const url = "/scrc-digcol1/scrc-digcol1-inventory/inventory.parquet"  // Need to substitute with static URL
-    //const url = "../inventory.parquet" 
+    const { parquetRead } = await import("https://cdn.jsdelivr.net/npm/hyparquet/src/hyparquet.min.js")
+    //const url = "/scrc-digcol1/scrc-digcol1-inventory/inventory.parquet"  
+    const url = "../inventory.parquet" // for local testing
     const res = await fetch(url)
     const arrayBuffer = await res.arrayBuffer()
     await parquetRead({
@@ -15,14 +16,26 @@ window.onload = async (event) => {
     });
 };
 
+function getPathParams() {
+    /* Extract optional folder= URL param (to load the tree from a specific branch) */
+    const downloadTargetParamsString = window.location.search;
+    const downloadTargetParams = new URLSearchParams(downloadTargetParamsString);
+    return downloadTargetParams.get("folder");
+}
+
 function createTree(data) {
     /* Creates a navigable tree of links based on the paths from the inventory. */
     const treeMap = createMap(data);
     let breadcrumbs = [{key: '/', index: 0}];
-    const treeDiv = document.getElementById('tree');
-    for (const key of treeMap.get(['/']).keys()) {
-        createNavigableLink(key);
+    let key = getPathParams();
+    if (key) {
+        // if a folder path was provided via URL param, add that to the breadcrumbs and navigate to that node
+        key.split('/').forEach( (keyPart, i) => {
+            if (keyPart) breadcrumbs.push({key: keyPart, index: i + 1});
+        });
     }
+    const treeDiv = document.getElementById('tree');
+    navigateTree();
     
     function createBreadCrumbs() {
         const breadcrumbsContainer = document.getElementById('breadcrumbs');
@@ -69,7 +82,7 @@ function createTree(data) {
 
     function ascendTree(e) {
         const index = e.target.dataset.index;
-        console.log(e.target.dataset)
+        if (breadcrumbs.length == 1) return; // Don't navigate past the root level
         for (let i = index; i < breadcrumbs.length; i++) {
             breadcrumbs.pop();
         }

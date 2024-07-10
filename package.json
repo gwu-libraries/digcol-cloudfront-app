@@ -1,6 +1,7 @@
 {
   "name": "cloudfront-authorization-at-edge",
   "version": "2.2.1",
+  "type": "module",
   "description": "Protect downloads of your content hosted on CloudFront with Cognito authentication using Lambda@Edge",
   "main": "index.js",
   "scripts": {
