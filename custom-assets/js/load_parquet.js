@@ -137,10 +137,11 @@ class NavigableTree {
     
     ascendTree(e) {
         /* Responds to a click on one of the breadcrumb links -- going up the tree to an ancestor of the current node */
-        const index = e.target.dataset.index;
+        const index = Number(e.target.dataset.index);
+        const numNodes = this.breadcrumbs.length;
         if (this.breadcrumbs.length == 1) return; // Don't navigate past the root level
         // Pop nodes off the list that follow the selected node
-        for (let i = index; i < this.breadcrumbs.length; i++) {
+        for (let i = index; i < numNodes - 1; i++) {
             this.breadcrumbs.pop();
         }
         this.navigateTree();
