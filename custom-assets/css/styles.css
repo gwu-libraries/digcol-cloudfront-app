@@ -11,6 +11,7 @@
   --gw-utility-buff: #e3dccc;
   --gw-hover-buff: #d9d0bb;
   --box-shadow: rgba(100, 100, 111, 0.2);
+  --zebra-grey: #eee;
 }
 
 /* gibson font */
@@ -260,4 +261,159 @@ th, td {
 
 td {
   word-wrap: break-word;
+}
+
+/* parquet html */
+#header {
+  width: 100%;
+  max-width: 100vw;
+  flex: 0 1 auto;
+	background-color: var(--gw-white);
+}
+
+.header-container,
+#breadcrumbs {
+  width: 100%;
+  max-width: 72em;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+#header .h1,
+#header .h1 a {
+	color: var(--gw-dark-blue);
+	font-weight: 200;
+}
+
+#header .header-wrap {
+	display: flex;
+	flex-direction: row;
+	margin: 2rem 0;
+}
+
+#header .site-name {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+  	line-height: 1.3;
+	max-width: 22rem;
+	margin-left: 1.5rem;
+}
+
+#header .site-name .title-wrap a {
+	font-size: 1.3125rem;
+	color: var(--gw-dark-blue);
+	text-decoration: none;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  align-items: baseline;
+  justify-content: flex-start;
+  background-color: var(--gw-white);
+}
+
+.breadcrumbs-container,
+.tree-container {
+  width: 100%;
+  max-width: 100vw;
+  flex: 0 1 auto;
+}
+
+.breadcrumbs-container {
+  min-height: 3.219rem;
+  color: var(--gw-white);
+  background-color: var(--gw-dark-blue);
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.breadcrumbs-container a {
+  color: var(--gw-white);
+}
+
+.breadcrumbs-container a:hover,
+.breadcrumbs-container a:focus {
+  color: var(--gw-hover-buff);
+}
+
+#breadcrumbs {
+  padding: 1rem;
+}
+
+#breadcrumbs img {
+  cursor: pointer;
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+}
+
+.tree-container {
+  display: flex;
+  justify-content: center;
+  flex: 1 1 auto;
+}
+
+.tree-container a {
+  color: var(--gw-light-blue);
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.tree-container a:hover,
+.tree-container a:focus {
+  color: var(--gw-hover);
+  text-decoration: underline;
+}
+
+#tree {
+  width: 100%;
+}
+
+#tree > * {
+  padding: 1rem;
+}
+
+#tree > *:nth-child(odd) {
+  background-color: var(--zebra-grey);
+}
+
+.link-wrapper > *,
+.file-wrapper > * {
+  display: flex;
+  flex-direction: row;
+  max-width: 72em;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.link-wrapper img,
+.file-wrapper img {
+  max-height: 16px;
+  max-width: auto;
+  filter: invert(25%) sepia(23%) saturate(0%) hue-rotate(226deg) brightness(93%) contrast(91%);
+  margin-right: 0.5rem;
+}
+
+.link-wrapper img {
+  filter: invert(63%) sepia(9%) saturate(1346%) hue-rotate(6deg) brightness(95%) contrast(90%);
+}
+
+.file-wrapper img {
+  filter: invert(17%) sepia(17%) saturate(6840%) hue-rotate(177deg) brightness(90%) contrast(98%);
+}
+
+.link-wrapper > * > p {
+  margin: 0;
+}
+
+.file-wrapper > * > p {
+  margin-bottom: 0;
 }
