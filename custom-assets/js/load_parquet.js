@@ -69,7 +69,7 @@ class NavigableTree {
                             onComplete: data => {
                                 // pass the metadata about each file object to the method that creates static links
                                 for (const row of data) {
-                                    this.createStaticLink(row);
+                                    if (row[0] != '') this.createStaticLink(row);
                                 }
                             }
                         };
@@ -124,10 +124,10 @@ class NavigableTree {
         const metadataInfo = document.createElement('p');
         const staticLink = document.createElement('a');
         // The download link contains the full path to the file object as a URL parameter
-        // We don't show the full path as the link text; we re-create it from the breadcrumbs 
         staticLink.setAttribute('href', `/index.html?file=${key}`);
         staticLink.setAttribute('target', '_blank');
         const keyParts = key.split('/');
+        // display just the file name, not the whole path
         staticLink.textContent = keyParts[keyParts.length - 1];
         metadataInfo.textContent = `Size: ${size}, Last modified: ${lastModified.toISOString()}`;
         div.appendChild(staticLink);
