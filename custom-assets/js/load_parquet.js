@@ -203,8 +203,8 @@ function createMap(parquetData) {
 window.onload = async (event) => {
     /* Uses the hyparquet.js library to load a parquet file of S3 inventory.
     The "key" column should contain the paths to the objects in the bucket. */
-    //const url = "/scrc-digcol1/scrc-digcol1-inventory/inventory.parquet"  
-    const url = "../inventory.parquet" // for local testing
+    const url = "/scrc-digcol1/scrc-digcol1-inventory/inventory.parquet"  
+    //const url = "../inventory.parquet" // for local testing
     const tree = new NavigableTree(url);
     await tree.loadInventory();
 };
