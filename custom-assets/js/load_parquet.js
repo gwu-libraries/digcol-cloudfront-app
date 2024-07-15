@@ -107,20 +107,33 @@ class NavigableTree {
     
     createNavigableLink(key) {
         /* Creates a link to a (navigable) child node of the current node of the tree */
+        const wrap = document.createElement('div');
+        const navDiv = document.createElement('div');
+        wrap.classList.add('link-wrapper');
+        const folder = document.createElement('img');
+        folder.setAttribute('src', '/img/folder-icon.svg');
         const p = document.createElement('p');
-        const link = document.createElement('a');
-        link.textContent = key;
-        link.setAttribute('href', '#')
-        link.addEventListener('click', e => this.descendTree(e));
-        p.appendChild(link);
-        this.treeDiv.append(p);
+        const nav = document.createElement('a');
+        nav.textContent = key;
+        nav.setAttribute('href', '#')
+        nav.addEventListener('click', e => this.descendTree(e));
+        p.appendChild(nav);
+        navDiv.appendChild(folder);
+        navDiv.appendChild(p);
+        wrap.appendChild(navDiv)
+        this.treeDiv.append(wrap);
     }
     
     createStaticLink(metadata) {
         /* Creates a link to download a file (terminal child node of the current node of the tree) 
         :param metadata: an array representing a row of the inventory. The first element should be the object (file) key, the second its size in bytes, and the third, its last modified date. */
         const [key, size, lastModified] = metadata;
-        const div = document.createElement('div');
+        const wrap = document.createElement('div');
+        const linkDiv = document.createElement('div');
+        const linkInfo = document.createElement('div');
+        wrap.classList.add('file-wrapper');
+        const download = document.createElement('img');
+        download.setAttribute('src', '/img/download-icon.svg');
         const metadataInfo = document.createElement('p');
         const staticLink = document.createElement('a');
         // The download link contains the full path to the file object as a URL parameter
@@ -130,9 +143,12 @@ class NavigableTree {
         // display just the file name, not the whole path
         staticLink.textContent = keyParts[keyParts.length - 1];
         metadataInfo.textContent = `Size: ${size}, Last modified: ${lastModified.toISOString()}`;
-        div.appendChild(staticLink);
-        div.appendChild(metadataInfo)
-        this.treeDiv.appendChild(div);
+        linkDiv.appendChild(download);
+        linkInfo.appendChild(staticLink);
+        linkInfo.appendChild(metadataInfo);
+        linkDiv.appendChild(linkInfo);
+        wrap.appendChild(linkDiv);
+        this.treeDiv.appendChild(wrap);
     }
     
     ascendTree(e) {
