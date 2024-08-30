@@ -7,6 +7,7 @@ class NavigableTree {
     /* Contains logic for converting an S3 inventory to a browsable tree of links. Stores the inventory as an ArrayBuffer. */
 
     constructor(inventoryUrl) {
+        console.log("NavigableTree instance created.")
         this.inventoryUrl = inventoryUrl;
     }
 
@@ -24,6 +25,7 @@ class NavigableTree {
     createTree(data) {
         /* Creates a navigable tree of links based on the paths from the inventory. */
         // Convert the inventory data (array of arrays) into a nested map structure (tree)
+        console.log("Creating tree...")
         this.treeMap = createMap(data);
         // Breadcrumbs begin with the root level
         this.breadcrumbs = [{key: '/', index: 0}];
@@ -200,12 +202,23 @@ function createMap(parquetData) {
 
 }
 
-window.onload = async (event) => {
+// something like this to check for the document load
+function onLoad(callback) {
+    if (document.readyState === 'complete') { 
+      console.log('Ready State complete')
+      callback();
+    } else {
+      console.log('Adding window listener')
+      window.addEventListener('load', callback);
+    }
+  };
+  
+onLoad(async (event) => {
     /* Uses the hyparquet.js library to load a parquet file of S3 inventory.
     The "key" column should contain the paths to the objects in the bucket. */
     const url = "/scrc-digcol1/scrc-digcol1-inventory/inventory.parquet"  
     //const url = "../inventory.parquet" // for local testing
     const tree = new NavigableTree(url);
     await tree.loadInventory();
-};
+});
 
