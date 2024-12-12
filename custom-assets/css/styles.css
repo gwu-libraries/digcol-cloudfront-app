@@ -417,3 +417,15 @@ td {
 .file-wrapper > * > p {
   margin-bottom: 0;
 }
+
+.clipboard-icon-container {
+  margin-left: 0.5rem;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.clipboard-icon { 
+  cursor: pointer;
+  max-width: auto;
+  margin-left: 0.5rem;
+}
