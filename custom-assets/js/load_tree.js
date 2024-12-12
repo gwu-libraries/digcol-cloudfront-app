@@ -192,11 +192,11 @@ class NavigableTree {
         staticLink.setAttribute('target', '_blank');
         staticLink.textContent = filename;
         metadataInfo.textContent = `Size: ${formatBytes(size)}, Last modified: ${new Date(lastModified).toDateString()}`;
-        linkDiv.appendChild(download);
+        linkInfo.appendChild(download);
         linkInfo.appendChild(staticLink);
         linkInfo.appendChild(this.createCopyToClipBoardButton(filename, 'file'));
-        linkInfo.appendChild(metadataInfo);
         linkDiv.appendChild(linkInfo);
+        linkDiv.appendChild(metadataInfo);
         wrap.appendChild(linkDiv);
         this.treeDiv.appendChild(wrap);
     }

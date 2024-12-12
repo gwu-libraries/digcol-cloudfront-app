@@ -386,7 +386,6 @@ td {
 .link-wrapper > *,
 .file-wrapper > * {
   display: flex;
-  flex-direction: row;
   max-width: 72em;
   margin-top: 0;
   margin-bottom: 0;
@@ -394,12 +393,20 @@ td {
   margin-right: auto;
 }
 
+.link-wrapper > * {
+  flex-direction: row;
+  align-items: center;
+}
+
+.file-wrapper > * {
+  flex-direction: column;
+}
+
 .link-wrapper img,
 .file-wrapper img {
   max-height: 16px;
-  max-width: auto;
+  width: auto;
   filter: invert(25%) sepia(23%) saturate(0%) hue-rotate(226deg) brightness(93%) contrast(91%);
-  margin-right: 0.5rem;
 }
 
 .link-wrapper img {
@@ -410,22 +417,37 @@ td {
   filter: invert(17%) sepia(17%) saturate(6840%) hue-rotate(177deg) brightness(90%) contrast(98%);
 }
 
-.link-wrapper > * > p {
-  margin: 0;
+.link-wrapper > * > p,
+.file-wrapper > * > div > a {
+  margin: 0 0 0 0.4rem;
 }
 
 .file-wrapper > * > p {
   margin-bottom: 0;
 }
 
+.file-wrapper > * > div {
+  display: inline-flex;
+  align-items: center;
+}
+
 .clipboard-icon-container {
+  display: flex;
   margin-left: 0.5rem;
-  border-radius: 50%;
+  padding: 0.2rem;
+  border-radius: 0.3rem;
   background-color: white;
+}
+
+.link-wrapper .clipboard-icon-container {
+  border: 1px solid var(--gw-buff);
+}
+
+.file-wrapper .clipboard-icon-container {
+  border: 1px solid var(--gw-dark-blue);
 }
 
 .clipboard-icon { 
   cursor: pointer;
   max-width: auto;
-  margin-left: 0.5rem;
 }
