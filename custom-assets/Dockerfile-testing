@@ -1,0 +1,10 @@
+FROM python:3.11-alpine
+
+COPY ./js /opt/custom-assets/js
+COPY ./css /opt/custom-assets/css
+COPY ./img /opt/custom-assets/img
+COPY *.html /opt/custom-assets/
+
+WORKDIR /opt/custom-assets
+
+ENTRYPOINT ["python", "-m", "http.server"]

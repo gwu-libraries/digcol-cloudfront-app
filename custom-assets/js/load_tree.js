@@ -4,10 +4,13 @@ class NavigableTree {
     /* Contains logic for converting an S3 inventory to a browsable tree of links. Stores the inventory as an ArrayBuffer. */
 
     constructor(inventoryUrl) {
-        this.inventoryRootUrl = inventoryUrl;
+        this.inventoryRootUrl = `${this.JSON_PATH}/${inventoryUrl}`;
     }
 
     ROOT_NODE_DEPTH = 3;
+
+    //JSON_PATH = '/js/testdata/json'
+    JSON_PATH = '/scrc-digcol1/scrc-digcol1-inventory/json'
 
     async loadRoot() {
         /* Method should be called once. Fetches the inventory from the URL provided to the constructor and stores it as an ArrayBuffer (to support multiple reads). Reads the ArrayBuffer as a parquet file, extracting the data in the _key_ column and initiating the creation of the browsable tree. */
@@ -24,7 +27,7 @@ class NavigableTree {
             // if it's not the current subtree, load it
             if (!Object.hasOwn(this, "subTree") || (this.subTree.rootKey != rootKey)) {
                 try {
-                const res = await fetch(`./js/testdata/json/${rootKey}.json`);
+                const res = await fetch(`${this.JSON_PATH}/${rootKey}.json`);
                 if (!res.ok) throw new Error('Terminal branch', {cause: 'terminal'});
                 const data = await res.json();
                 this.subTree = { rootKey: rootKey, 
@@ -257,7 +260,77 @@ class NavigableTree {
 
 }
 
-function formatBytes(bytes,decimals) {
+class RecentStats {
+    /* Contains logic for converting an S3 inventory to a browsable tree of links. Stores the inventory as an ArrayBuffer. */
+
+    STATS_PATH = '/scrc-digcol1/scrc-digcol1-inventory/json/__weekly-update.json';
+    //STATS_PATH = '/js/testdata/json/__weekly-update.json';
+
+    constructor() {
+        
+    }
+
+    async loadStats() {
+        const res = await fetch(this.STATS_PATH);
+        const data = await res.json();
+        await this.createStats(data);
+        await this.createDownloadTable(data);
+    }
+
+    async createStats(data) {
+        let statsTableRow = document.getElementById('recent-stats-table-body-row');
+        // Add the totals in each category to the table
+        for (let key of ['additions', 'changes', 'deletes']) {
+            let total = data[key].length;
+            let cell = document.createElement('td');
+            cell.textContent = total;
+            statsTableRow.appendChild(cell);
+        }
+        // Update the caption
+        // Updates are from the previous week
+        let caption = document.getElementById('recent-stats-table-caption');
+        let sunday = getSunday(new Date());
+        sunday.setDate(sunday.getDate() - 7);
+        caption.textContent = `Inventory changes since ${sunday.toLocaleDateString()}`;
+    }
+
+    async createDownloadTable(data) {
+        // Create the downloadable CSV file
+        let headers = ['Bucket', 'Key', 'Size', 'LastModifiedDate'];
+        let typeMap = {changes: 'Modified', additions: 'Added', deletions: 'Deleted'};
+        let csv = 'data:text/csv;charset=utf-8,';
+        csv += ('Type,' + headers.join(',') + '\r\n');
+        Object.keys(data).forEach(key => {
+            // each object is a row in the CSV
+            data[key].forEach(obj => {
+                // each row starts with the type of update
+                csv += `${typeMap[key]},`;
+                for (let header of headers) {
+                    // lastModifiedDate is the last header, so we include the line terminal characters
+                    if (header == 'LastModifiedDate') {
+                        csv += `${new Date(obj[header]).toLocaleDateString()}\r\n`;
+                    } else if (header == 'Size') {
+                        csv += `${formatBytes(obj[header])},`;
+                    }
+                    else {
+                        csv += `${obj[header]},`;
+                    }
+                }
+            })
+        });
+        // Create a download link
+        let encodedCsv = encodeURI(csv);
+        let downloadLink = document.createElement('a');
+        downloadLink.setAttribute('target', '_blank');
+        downloadLink.setAttribute('href', encodedCsv);
+        downloadLink.setAttribute('download', 'recent-objects.csv');
+        downloadLink.textContent = 'Download CSV of recent objects'
+        document.getElementById('recent-stats').append(downloadLink);
+    }
+
+}
+
+function formatBytes(bytes, decimals) {
     if(bytes == 0) return '0 Bytes';
     var k = 1024,
         dm = decimals || 2,
@@ -265,6 +338,14 @@ function formatBytes(bytes,decimals) {
         i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
  }
+
+function getSunday(date) {
+    // Get the date of Sunday of the current week
+    let d = new Date();
+    let sunday = d.getDate() - d.getDay();
+    return new Date(d.setDate(sunday));
+}
+
 
 function getPathParams() {
     /* Extract optional folder= URL param (to load the tree from a specific branch) */
@@ -285,9 +366,9 @@ function onLoad(callback) {
 onLoad(async (event) => {
     // Uses the hyparquet.js library to load a parquet file of S3 inventory.
     //The "key" column should contain the paths to the objects in the bucket. 
-    const rootUrl = "./js/testdata/json/root.json"  
-    //const url = "../inventory.parquet" // for local testing
-    const tree = new NavigableTree(rootUrl);
+    const tree = new NavigableTree('root.json');
     await tree.loadRoot();
+    const stats = new RecentStats();
+    await stats.loadStats();
 });
 
