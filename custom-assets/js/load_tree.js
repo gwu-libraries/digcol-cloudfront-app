@@ -297,7 +297,7 @@ class RecentStats {
     async createDownloadTable(data) {
         // Create the downloadable CSV file
         let headers = ['Bucket', 'Key', 'Size', 'LastModifiedDate'];
-        let typeMap = {changes: 'Modified', additions: 'Added', deletions: 'Deleted'};
+        let typeMap = {changes: 'Modified', additions: 'Added', deletes: 'Deleted'};
         let csv = 'data:text/csv;charset=utf-8,';
         csv += ('Type,' + headers.join(',') + '\r\n');
         Object.keys(data).forEach(key => {
