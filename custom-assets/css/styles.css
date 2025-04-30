@@ -403,6 +403,7 @@ td {
 
 .link-wrapper img,
 .file-wrapper img {
+  margin-left: 0.2rem;
   max-height: 16px;
   width: auto;
   filter: invert(25%) sepia(23%) saturate(0%) hue-rotate(226deg) brightness(93%) contrast(91%);
@@ -449,4 +450,76 @@ td {
 .clipboard-icon { 
   cursor: pointer;
   max-width: auto;
+}
+
+/* recent stats table styles */
+.recent-stats-container {
+  width: 100%;
+  padding: 1rem 0 2rem 0;
+  background-color: var(--gw-white);
+}
+
+.recent-stats-container table#recent-stats-table {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.recent-stats-container table#recent-stats-table > caption {
+  margin-left: 0.2rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+  text-align: start;
+  color: var(--gw-dark-blue);
+}
+
+.recent-stats-container table#recent-stats-table > thead > tr > td {
+  margin-left: 0.4rem;
+  padding: 1rem 2.4rem 0.4rem 2.4rem;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--gw-dark-blue);
+}
+
+.recent-stats-container table#recent-stats-table > caption::after,
+.recent-stats-container table#recent-stats-table > thead > tr > td::after {
+  position: relative;
+  display: block;
+  height: 1px;
+  left: -0.4rem;
+  bottom: -0.2rem;
+  content: "";
+  background-color: var(--gw-buff);
+}
+
+.recent-stats-container table#recent-stats-table > caption::after {
+  width: 100%;
+}
+
+.recent-stats-container table#recent-stats-table > thead > tr > td::after {
+  width: 80%;
+}
+
+.recent-stats-container table#recent-stats-table > tbody > tr > td {
+  padding: 0.3rem 3rem 1rem 3rem;
+}
+
+.recent-stats-container #recent-stats > a {
+  display: block;
+  margin: auto auto 0.5rem auto;
+  text-align: center;
+  font-size: 1rem;
+  background-color: var(--gw-light-blue);
+  width: fit-content;
+  padding: 0.6rem 0.8rem;
+  color: var(--gw-white);
+  text-decoration: none;
+  border-radius: 0.3rem;
+  transition: all 0.4s ease;
+}
+
+.recent-stats-container #recent-stats > a:hover,
+.recent-stats-container #recent-stats > a:focus {
+  background-color: var(--gw-hover-buff);
+  color: var(--gw-dark-blue);
 }
